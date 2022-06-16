@@ -2,25 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block content %}
-<h1>Delivery form</h1>
-
-    <form method="post", enctype="multipart/form-data">
-    {% csrf_token %}
-
-        {% for f in form %}
-
-        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
-
-        {% endfor %}
-
-    <button type="submit">Send it!</button>
-</form>
-
-    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add order</title>
 </head>
 <body>
+    <h1>Add a new order</h1>
+    <form id="form-container" method="POST">
+        {% csrf_token %}
+        {{d_formset.management_form}}
+        {% for form in d_formset %}
+        <div class="d-form">
+        {{form.as_p}}
+           <!--  <p><label class="form-label" for="{{ form.NameGoods.id_for_label }}">{{form.NameGoods.label}}: </label>{{ form.NameGoods }}</p>
+            <p><label class="form-label" for="{{ form.TypeGoods.id_for_label }}">{{form.TypeGoods.label}}: </label>{{ form.TypeGoods }}</p>
+            <p><label class="form-label" for="{{ form.DateDeliv.id_for_label }}">{{form.DateDeliv.label}}: </label>{{ form.DateDeliv }}</p>
+            <p><label class="form-label" for="{{ form.File.id_for_label }}">{{form.File.label}}: </label>{{ form.File }}</p>
+-->
+        </div>
+        {% endfor %}
+        <button id="add-form" type="button">Add another delivery address</button>
+        <button type="submit">Create order</button>
+    </form>
 
-</body>
+<script>
+        let dForm = document.querySelectorAll(".d-form")
+        let container = document.querySelector("#form-container")
+        let addButton = document.querySelector("#add-form")
+        let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+        let formNum = dForm.length-1
+        addButton.addEventListener('click', addForm)
+
+        function addForm(e){
+            e.preventDefault()
+
+            let newForm = dForm[0].cloneNode(true)
+            let formRegex = RegExp(`form-(\\d){1}-`,'g')
+
+            formNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`)
+            container.insertBefore(newForm, addButton)
+
+            totalForms.setAttribute('value', `${formNum+1}`)
+        }
+    </script>
+
+    </body>
 </html>

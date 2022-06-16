@@ -6,8 +6,6 @@ class Deliv(models.Model):
     DateDeliv=models.DateField(auto_now=False)
     File = models.FileField(verbose_name='File address', upload_to='files/')
 
-    def get_absolute_url(self):
-        return '/success/'
 
     def __str__(self):
         return self.name
