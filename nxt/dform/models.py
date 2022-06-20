@@ -3,12 +3,12 @@ from django.db import models
 class Deliv(models.Model):
     NameGoods=models.CharField(max_length=255)
     TypeGoods=models.CharField(max_length=255)
-    DateDeliv=models.DateField(auto_now=False)
-    File = models.FileField(verbose_name='File address', upload_to='files/')
+    DateDeliv=models.DateField(auto_now=False, blank=True, null=True)
+    File = models.FileField(verbose_name='File address', upload_to='files/', blank=True, null=True)
 
 
     def __str__(self):
-        return self.name
+        return self.NameGoods
 
 
 class Address(models.Model):
